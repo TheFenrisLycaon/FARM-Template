@@ -55,3 +55,4 @@ dir
 backend/uv.lock
 frontend/bun.lock
 .claude/
+docs/
