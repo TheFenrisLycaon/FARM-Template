@@ -1,18 +1,25 @@
-FROM python:3.13-slim
+FROM python:3.13-slim AS builder
 
-# Install uv.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Copy the application into the container.
-COPY . /app
-
-
-# Install the application dependencies.
 WORKDIR /app
-RUN uv sync --frozen --no-cache
+COPY pyproject.toml uv.lock* ./
+RUN uv sync --frozen --no-cache --no-install-project || uv sync --no-cache --no-install-project
+COPY . .
+RUN uv sync --frozen --no-cache || uv sync --no-cache
 
-# Add venv to PATH
-ENV PATH="/app/.venv/bin:$PATH"
 
-# Run the application.
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+FROM python:3.13-slim AS runtime
+
+RUN useradd --system --create-home --uid 1001 appuser
+
+WORKDIR /app
+COPY --from=builder --chown=appuser:appuser /app /app
+
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1
+
+USER appuser
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

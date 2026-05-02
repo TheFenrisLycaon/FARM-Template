@@ -9,13 +9,22 @@ PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 
-# Load the .env file from the project root
 load_dotenv(dotenv_path=os.path.join(PROJECT_ROOT, ".env"))
+
+
+def _required(name: str) -> str:
+    value = os.getenv(name)
+    if not value:
+        raise RuntimeError(
+            f"Required environment variable {name!r} is not set. "
+            f"Copy .env.example to .env and fill in real values."
+        )
+    return value
 
 
 class Settings:
     """
-    Application settings class. Reads values from environment variables.
+    Application settings, populated from environment variables
 
     Attributes:
         SECRET_KEY (str): Secret key for JWT authentication.
@@ -31,8 +40,8 @@ class Settings:
     LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/src.log")
     LOG_FILE_SIZE = int(os.getenv("LOG_FILE_SIZE", 10 * 1024 * 1024))
 
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-    MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "test")
+    MONGO_URI = _required("MONGO_URI")
+    MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "app")
 
     CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY", "")
 
@@ -45,5 +54,4 @@ class Settings:
             raise ValueError("CLERK_SECRET_KEY environment variable must be set")
 
 
-# Create a single, importable instance of the settings
 settings = Settings()
