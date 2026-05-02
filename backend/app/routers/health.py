@@ -1,18 +1,20 @@
-from fastapi import APIRouter
-from motor.motor_asyncio import AsyncIOMotorClient
-from app.core.config import settings
+import logging
+
+from fastapi import APIRouter, Request
 from pymongo.errors import ConnectionFailure
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.get("/health/db", tags=["Health"])
-async def check_db_connection():
+async def check_db_connection(request: Request):
     """Check if the database is connected properly."""
     try:
-        client = AsyncIOMotorClient(settings.MONGO_URI, serverSelectionTimeoutMS=2000)
-        # The ismaster command is cheap and does not require auth.
-        await client.admin.command('ping')
-        client.close()
+        client = request.app.state.mongo_client
+        await client.admin.command("ping")
         return {"status": "ok", "message": "Database connection successful."}
     except ConnectionFailure as e:
+        logger.warning(f"Database connection failed: {e}")
         return {"status": "error", "message": f"Database connection failed: {str(e)}"}

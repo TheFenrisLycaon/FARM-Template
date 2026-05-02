@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
+.pytest_cache/
 
 # Virtual environments
 .venv
@@ -53,3 +54,4 @@ next-env.d.ts
 dir
 backend/uv.lock
 frontend/bun.lock
+.claude/

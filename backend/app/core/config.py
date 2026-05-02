@@ -27,15 +27,22 @@ class Settings:
         LOG_FILE_PATH (str): Path to the log file.
         LOG_FILE_SIZE (int): Maximum log file size in bytes.
     """
+
     LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/src.log")
-    LOG_FILE_SIZE = int(os.getenv("LOG_FILE_SIZE", 10 * 1024 * 1024))  # Default to 10 MB
+    LOG_FILE_SIZE = int(os.getenv("LOG_FILE_SIZE", 10 * 1024 * 1024))
 
     MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
     MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "test")
 
-    CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY", "your_clerk_secret_key")
+    CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY", "")
 
-    BACKEND_CORS_ORIGINS = os.getenv("BACKEND_CORS_ORIGINS", "*").split(",")
+    BACKEND_CORS_ORIGINS = os.getenv("BACKEND_CORS_ORIGINS", "localhost:3000").split(
+        ","
+    )
+
+    def __init__(self):
+        if not self.CLERK_SECRET_KEY:
+            raise ValueError("CLERK_SECRET_KEY environment variable must be set")
 
 
 # Create a single, importable instance of the settings

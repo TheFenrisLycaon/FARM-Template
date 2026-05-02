@@ -8,6 +8,8 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 
+const linkClasses = "transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-purple-300 hover:text-black";
+
 const Navbar = () => {
     return (
         <header>
@@ -19,30 +21,24 @@ const Navbar = () => {
                 </div>
                 <ul className="flex space-x-4">
                     <li>
-                        <Link
-                            href="/about"
-                            className="transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-purple-300 hover:text-black"
-                        >
+                        <Link href="/about" className={linkClasses}>
                             About
                         </Link>
                     </li>
                     <li>
-                        <Link
-                            href="/contact"
-                            className="transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-purple-300 hover:text-black"
-                        >
+                        <Link href="/contact" className={linkClasses}>
                             Contact
                         </Link>
                     </li>
                 </ul>
                 <div className="flex items-center space-x-4">
                     <SignedOut>
-                        <span className="transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-purple-300 hover:text-black cursor-pointer">
+                        <div className={`${linkClasses} cursor-pointer`}>
                             <SignInButton />
-                        </span>
-                        <span className="transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-purple-300 hover:text-black cursor-pointer">
+                        </div>
+                        <div className={`${linkClasses} cursor-pointer`}>
                             <SignUpButton />
-                        </span>
+                        </div>
                     </SignedOut>
                     <SignedIn>
                         <UserButton />

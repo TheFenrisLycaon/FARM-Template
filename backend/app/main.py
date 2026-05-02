@@ -1,7 +1,6 @@
 import logging
 from contextlib import asynccontextmanager
 
-from clerk_backend_api import Clerk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,13 +13,12 @@ from app.routers.health import router as health_router
 
 logger = logging.getLogger(__name__)
 
-clerk = Clerk(bearer_auth=settings.CLERK_SECRET_KEY)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_logging()
     client = await init_db()
+    app.state.mongo_client = client
     yield
     await close_mongo_connection(client)
 

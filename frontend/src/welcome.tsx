@@ -1,5 +1,4 @@
-
-const features = [
+const FEATURES = [
     {
         title: "Full Stack Template",
         description: "Includes a Next.js frontend and a FastAPI backend for rapid development."
@@ -34,7 +33,7 @@ const WelcomePage = () => {
                 This project provides a modern, production-ready full stack template combining Next.js and FastAPI, designed to help you build and scale your applications quickly.
             </p>
             <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6">
-                {features.map((feature, idx) => (
+                {FEATURES.map((feature, idx) => (
                     <div key={idx} className="card bg-purple-800 bg-opacity-80 rounded-lg p-6 shadow-md border border-pink-300">
                         <h2 className="text-2xl font-semibold mb-2">{feature.title}</h2>
                         <p className="text-base text-purple-100">{feature.description}</p>
