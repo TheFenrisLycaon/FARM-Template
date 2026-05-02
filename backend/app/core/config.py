@@ -1,15 +1,14 @@
 import logging
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
-PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-)
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
-load_dotenv(dotenv_path=os.path.join(PROJECT_ROOT, ".env"))
+load_dotenv(dotenv_path=PROJECT_ROOT / ".env")
 
 
 def _required(name: str) -> str:
