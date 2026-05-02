@@ -29,13 +29,6 @@ async def init_db() -> AsyncIOMotorClient:
         raise
 
 
-def get_db() -> AsyncIOMotorDatabase:
-    """FastAPI dependency that returns the shared Mongo database handle."""
-    if _db is None:
-        raise RuntimeError("Database not initialized. init_db() must run at startup.")
-    return _db
-
-
 async def close_mongo_connection(client: AsyncIOMotorClient) -> None:
     if client:
         logger.info("Closing MongoDB connection...")
