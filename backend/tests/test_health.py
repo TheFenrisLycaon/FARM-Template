@@ -6,7 +6,7 @@ os.environ.setdefault("BACKEND_CORS_ORIGINS", "http://localhost:3000")
 
 from fastapi.testclient import TestClient  # noqa: E402
 
-from app.db.database import get_db  # noqa: E402
+from app.core.deps import get_db  # noqa: E402
 from app.main import app  # noqa: E402
 
 
